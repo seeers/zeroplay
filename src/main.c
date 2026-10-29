@@ -1334,8 +1334,10 @@ static int run_control_mode(Options *opt)
         if (lr < 0) break;  /* stdin closed — controller gone, exit cleanly */
 
         if (play_image) {
-            if (player.image_end_us == 0)
+            if (player.image_end_us == 0) {
+                sleep_us(50000);  /* Static image: avoid busy-spinning. */
                 continue;
+            }
             if (now_us() < player.image_end_us)
                 continue;
 
